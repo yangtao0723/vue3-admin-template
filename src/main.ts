@@ -8,13 +8,13 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(`${key}Icon`, component)
 }
+import '@/components/useDefaultComponents'
 
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 import router from '@/router'
-import './style.css'
 app
   .use(pinia)
   .use(ElementPlus, {

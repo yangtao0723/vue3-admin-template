@@ -7,15 +7,16 @@
         :rules="rules"
         size="midium"
         label-width="80px">
-        <el-form-item
-          label="账号"
-          prop="name">
-          <el-input v-model="ruleForm.username" />
+        <el-form-item prop="name">
+          <el-input
+            prefix-icon="userIcon"
+            v-model="ruleForm.username" />
         </el-form-item>
-        <el-form-item
-          label="密码"
-          prop="name">
-          <el-input v-model="ruleForm.pwd" />
+        <el-form-item prop="name">
+          <el-input
+            prefix-icon="lockIcon"
+            v-model="ruleForm.pwd"
+            type="password" />
         </el-form-item>
         <el-form-item>
           <el-button

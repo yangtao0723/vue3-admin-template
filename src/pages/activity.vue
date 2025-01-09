@@ -1,45 +1,42 @@
 <template>
-  <el-table
-    :data="tableData"
-    style="width: 100%">
-    <el-table-column
-      prop="date"
-      label="Date"
-      width="180" />
-    <el-table-column
-      prop="name"
-      label="Name"
-      width="180" />
-    <el-table-column
-      prop="address"
-      label="Address" />
-  </el-table>
-  <el-form
-    ref="ruleFormRef"
-    style="max-width: 600px"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="auto"
-    class="demo-ruleForm"
-    :size="formSize"
-    status-icon>
-    <el-form-item
-      label="Activity name"
-      prop="name">
-      <el-input v-model="ruleForm.name" />
-    </el-form-item>
-    <el-form-item
-      label="Activity name"
-      prop="region">
-      <el-input v-model="ruleForm.region" />
-    </el-form-item>
-  </el-form>
-  <el-button @click="regTable">验证</el-button>
-  <el-button @click="resetForm">Reset</el-button>
+  <div>
+    <el-table :data="tableData">
+      <el-table-column
+        prop="date"
+        label="Date"
+        width="180" />
+      <el-table-column
+        prop="name"
+        label="Name"
+        width="180" />
+      <el-table-column
+        prop="address"
+        label="Address" />
+    </el-table>
+    <el-form
+      ref="ruleFormRef"
+      :model="ruleForm"
+      :rules="rules"
+      label-width="auto"
+      status-icon>
+      <el-form-item
+        label="Activity name"
+        prop="name">
+        <el-input v-model="ruleForm.name" />
+      </el-form-item>
+      <el-form-item
+        label="Activity name"
+        prop="region">
+        <el-input v-model="ruleForm.region" />
+      </el-form-item>
+    </el-form>
+    <el-button @click="regTable">验证</el-button>
+    <el-button @click="resetForm">Reset</el-button>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+<script setup lang="ts" name="Activity22">
+import { ref, reactive, onMounted, defineComponent } from 'vue'
 import { validateTableData, isEmpty } from '@/utils/func'
 import router from '@/router'
 const ruleFormRef = ref()
@@ -51,33 +48,33 @@ const rules = reactive({
 const resetForm = async () => {
   ruleFormRef.value.resetFields()
 }
+const tableData = reactive([
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-04',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '',
+    name: '',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+])
 const regTable = async () => {
   ruleFormRef.value.validate((valid: boolean) => {
     console.log(valid)
   })
-  return
-  const tableData = [
-    {
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-04',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '',
-      name: '',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-  ]
+
   await validateTableData(tableData, {
     date: (value: any, row: object, callback: Function) => {
       if (isEmpty(value)) {

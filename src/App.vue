@@ -1,11 +1,8 @@
 <template>
   <router-view
-    v-slot="{ Component }"
+    v-slot="{ Component, route }"
     style="height: 100%; width: 100%">
-    <!-- 使用 keep-alive 缓存组件 -->
-    <keep-alive>
-      <component :is="Component" />
-    </keep-alive>
+    <component :is="Component" />
   </router-view>
 </template>
 <script setup lang="ts"></script>

@@ -1,14 +1,41 @@
 <template>
   <div class="navbar">
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>
-        <a href="/">promotion management</a>
-      </el-breadcrumb-item>
-    </el-breadcrumb>
+    <div style="display: flex; align-items: center; flex: 1">
+      <el-icon
+        size="20px"
+        @click="baseIsCollapse = !baseIsCollapse"
+        style="margin-right: 20px">
+        <ExpandIcon v-if="baseIsCollapse" />
+        <FoldIcon v-else />
+      </el-icon>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item
+          v-for="(item, index) in filterMatched"
+          :key="item.path">
+          {{ item.name }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div style="text-align: right">
+      <img
+        style="border-radius: 50%"
+        src="https://avatars.githubusercontent.com/u/25154432?v=4&size=35"
+        alt="" />
+    </div>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useGlobalInfo, useGlobalStatus } from '@/store'
+import { storeToRefs } from 'pinia'
+const globalInfo = useGlobalInfo()
+const globalStatus = useGlobalStatus()
+const { baseIsCollapse } = storeToRefs(globalStatus)
+const filterMatched = computed(() => {
+  return globalInfo.baseMatchedRouters.filter((item: any) => item.path && item.path != '/dashboard')
+})
+</script>
 <style scoped lang="scss">
 .navbar {
   height: 50px;

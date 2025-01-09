@@ -2,11 +2,11 @@
   <div>
     这是dashboard
     <el-button @click="resetRefs">重置</el-button>
-    <div style="height: 1000px; width: 100%; background-color: red">1</div>
+    <div style="height: 1000px; width: 100%">1</div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="dashboardAA">
 import { useGlobalInfo } from '@/store'
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'

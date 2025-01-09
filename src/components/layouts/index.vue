@@ -4,7 +4,12 @@
     <div style="flex: 1">
       <BaseHeader></BaseHeader>
       <BaseTag></BaseTag>
-      <RouterView style="height: calc(100% - 84px); overflow: auto"></RouterView>
+      <div style="height: calc(100% - 84px); display: flex; flex-direction: column">
+        <RouterView
+          :key="$route.fullPath"
+          style="flex: 1; overflow: auto"></RouterView>
+        <BaseFooter></BaseFooter>
+      </div>
     </div>
   </div>
 </template>

@@ -4,29 +4,29 @@
     :key="index">
     <el-sub-menu
       v-if="item.children && item.children.length"
-      :index="item.id">
-      <template #title> {{ item.name }}</template>
+      :index="item.name">
+      <template #title>
+        <span>{{ item.name }}</span>
+      </template>
       <BaseSubMenu :menu="item.children"></BaseSubMenu>
     </el-sub-menu>
     <el-menu-item
       v-else
+      :route="item.path"
       :index="item.path">
-      {{ item.name }}
+      <span>{{ item.name }}</span>
     </el-menu-item>
   </template>
 </template>
 
-<script setup>
-import { defineComponent } from 'vue'
+<script setup name="BaseSubMenu">
 const props = defineProps({
   menu: {
     type: Array,
     default: () => [],
   },
 })
-defineComponent({
-  name: 'BaseSubMenu',
-})
+defineExpose({})
 </script>
 
 <style lang="scss" scoped></style>

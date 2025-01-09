@@ -2,34 +2,41 @@
   <div class="tags-view-container">
     <div
       @click="switchTag(item.path)"
-      v-for="(item, index) in tags"
+      v-for="(item, index) in tagsViews"
       :key="index"
       class="tag"
       :class="{ active: route.fullPath === item.path }">
       {{ item.name }}
+      <el-icon
+        style="margin-left: 3px"
+        v-if="index !== 0"
+        @click.stop="globalInfo.removeTags(item, router)">
+        <CloseIcon />
+      </el-icon>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useGlobalInfo } from '@/store'
 const route = useRoute()
 const router = useRouter()
-const tags = ref([
-  {
-    name: '首页',
-    path: '/dashboard',
+const globalInfo = useGlobalInfo()
+const tagsViews = globalInfo.baseTags
+watch(
+  () => route.fullPath,
+  (newV) => {
+    // 监听路由变化
+    const { fullPath, name } = route
+    globalInfo.addTags({ name, path: fullPath })
+    globalInfo.baseMatchedRouters = route.matched
   },
   {
-    name: '活动页',
-    path: '/activity',
-  },
-  {
-    name: '登录页',
-    path: '/login',
-  },
-])
+    immediate: true,
+  }
+)
 const switchTag = (path) => {
   router.push(path)
 }
@@ -37,6 +44,7 @@ const switchTag = (path) => {
 
 <style lang="scss" scoped>
 .tags-view-container {
+  display: flex;
   height: 34px;
   background: #fff;
   border-bottom: 1px solid #d8dce5;
@@ -44,7 +52,9 @@ const switchTag = (path) => {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   .tag {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     cursor: pointer;
     height: 26px;

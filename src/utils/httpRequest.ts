@@ -7,11 +7,11 @@ const codeOption: any = {
   SF00: '连接超时',
   TK03: '登录超时或未登录',
 }
-interface optionsInterface {
+interface optionsInterface<T> {
   url: string
   method?: string
   params?: object
-  data?: object
+  data?: T
 }
 interface exOptionsInterface {
   useGlobalLoading: false
@@ -29,7 +29,7 @@ interface exOptionsInterface {
  * @param {boolean} [exOptions.useGlobalLoading] - 是否启用全局loading
  * @param {boolean} [exOptions.closeErrorMessage] - 是否关闭错误提示
  */
-function httpRequest(options: optionsInterface, exOptions?: exOptionsInterface): Promise<any> {
+function httpRequest<T>(options: optionsInterface<T>, exOptions?: exOptionsInterface): Promise<any> {
   const baseUrl = Config.BASE_URL
   const httpInstance = axios.create({
     baseURL: baseUrl,
@@ -44,7 +44,7 @@ function httpRequest(options: optionsInterface, exOptions?: exOptionsInterface):
   httpInstance.interceptors.request.use(
     (config) => {
       const globalInfo = useGlobalInfo()
-      config.headers.Authorization = !!globalInfo.userToken ? 'Bearer ' + globalInfo.userToken : ''
+      config.headers.Authorization = !!globalInfo.userToken ? globalInfo.userToken : ''
       return config
     },
     (error) => error
@@ -64,21 +64,13 @@ function httpRequest(options: optionsInterface, exOptions?: exOptionsInterface):
           ElMessage.error(data.message)
         }
       }
-      try {
-        return await Promise.reject(data)
-      } catch (err) {
-        return err
-      }
+      return await Promise.reject(data)
     },
     async (error) => {
       if (exOptions && !exOptions.closeErrorMessage) {
         ElMessage.error(error.message || '服务异常')
       }
-      try {
-        return await Promise.reject(error || '网络异常')
-      } catch (err) {
-        return err
-      }
+      return await Promise.reject(error || '网络异常')
     }
   )
   return httpInstance
